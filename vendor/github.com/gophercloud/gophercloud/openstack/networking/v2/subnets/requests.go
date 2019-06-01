@@ -96,6 +96,7 @@ type CreateOpts struct {
 	// The UUID of the project who owns the Subnet. Only administrative users
 	// can specify a project UUID other than their own.
 	TenantID string `json:"tenant_id,omitempty"`
+	NuageNet string `json:"nuagenet,omitempty"`
 
 	// The UUID of the project who owns the Subnet. Only administrative users
 	// can specify a project UUID other than their own.
@@ -186,6 +187,7 @@ type UpdateOpts struct {
 	// string will cause the subnet to be created with no gateway. Setting to
 	// an explicit address will set that address as the gateway.
 	GatewayIP *string `json:"gateway_ip,omitempty"`
+	NuageNet *string `json:"nuagenet,omitempty"`
 
 	// DNSNameservers are the nameservers to be set via DHCP.
 	DNSNameservers *[]string `json:"dns_nameservers,omitempty"`

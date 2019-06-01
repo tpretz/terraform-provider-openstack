@@ -70,6 +70,11 @@ func resourceNetworkingSubnetV2() *schema.Resource {
 				ForceNew: true,
 				Computed: true,
 			},
+			"nuagenet": {
+				Type:     schema.TypeString,
+				Optional: true,
+				ForceNew: false,
+			},
 			"allocation_pools": {
 				Type:          schema.TypeList,
 				Optional:      true,
@@ -248,6 +253,11 @@ func resourceNetworkingSubnetV2Create(d *schema.ResourceData, meta interface{}) 
 		createOpts.GatewayIP = &gatewayIP
 	}
 
+	if v, ok := d.GetOk("nuagenet"); ok {
+		nuageNet := v.(string)
+		createOpts.NuageNet = &nuageNet
+	}
+
 	noGateway := d.Get("no_gateway").(bool)
 	if noGateway {
 		gatewayIP := ""
@@ -314,6 +324,7 @@ func resourceNetworkingSubnetV2Read(d *schema.ResourceData, meta interface{}) er
 	d.Set("name", s.Name)
 	d.Set("description", s.Description)
 	d.Set("tenant_id", s.TenantID)
+	d.Set("nuagenet", s.NuageNet)
 	d.Set("dns_nameservers", s.DNSNameservers)
 	d.Set("enable_dhcp", s.EnableDHCP)
 	d.Set("network_id", s.NetworkID)
@@ -387,6 +398,15 @@ func resourceNetworkingSubnetV2Update(d *schema.ResourceData, meta interface{}) 
 			hasChange = true
 			gatewayIP := ""
 			updateOpts.GatewayIP = &gatewayIP
+		}
+	}
+
+	if d.HasChange("nuagenet") {
+		hasChange = true
+		updateOpts.NuageNet = nil
+		if v, ok := d.GetOk("nuagenet"); ok {
+			nuageNet := v.(string)
+			updateOpts.NuageNet = &nuageNet
 		}
 	}
 
