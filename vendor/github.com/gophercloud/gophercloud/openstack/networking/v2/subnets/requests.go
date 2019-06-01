@@ -96,7 +96,7 @@ type CreateOpts struct {
 	// The UUID of the project who owns the Subnet. Only administrative users
 	// can specify a project UUID other than their own.
 	TenantID string `json:"tenant_id,omitempty"`
-	NuageNet string `json:"nuagenet,omitempty"`
+	NuageNet *string `json:"nuagenet,omitempty"`
 
 	// The UUID of the project who owns the Subnet. Only administrative users
 	// can specify a project UUID other than their own.
