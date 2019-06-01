@@ -19,6 +19,8 @@ type ListOptsBuilder interface {
 type ListOpts struct {
 	Name            string `q:"name"`
 	Description     string `q:"description"`
+	NuageNet        string `q:"nuagenet"`
+	NetPartition        string `q:"net_partition"`
 	EnableDHCP      *bool  `q:"enable_dhcp"`
 	NetworkID       string `q:"network_id"`
 	TenantID        string `q:"tenant_id"`
@@ -97,6 +99,7 @@ type CreateOpts struct {
 	// can specify a project UUID other than their own.
 	TenantID string `json:"tenant_id,omitempty"`
 	NuageNet *string `json:"nuagenet,omitempty"`
+	NetPartition *string `json:"net_partition,omitempty"`
 
 	// The UUID of the project who owns the Subnet. Only administrative users
 	// can specify a project UUID other than their own.
@@ -188,6 +191,7 @@ type UpdateOpts struct {
 	// an explicit address will set that address as the gateway.
 	GatewayIP *string `json:"gateway_ip,omitempty"`
 	NuageNet *string `json:"nuagenet,omitempty"`
+	NetPartition *string `json:"net_partition,omitempty"`
 
 	// DNSNameservers are the nameservers to be set via DHCP.
 	DNSNameservers *[]string `json:"dns_nameservers,omitempty"`

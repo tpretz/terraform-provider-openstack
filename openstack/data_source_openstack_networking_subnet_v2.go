@@ -34,6 +34,17 @@ func dataSourceNetworkingSubnetV2() *schema.Resource {
 				Optional: true,
 			},
 
+			"nuagenet": {
+				Type:     schema.TypeString,
+				Computed: true,
+				Optional: true,
+			},
+			"net_partition": {
+				Type:     schema.TypeString,
+				Computed: true,
+				Optional: true,
+			},
+
 			"dhcp_enabled": {
 				Type:          schema.TypeBool,
 				ConflictsWith: []string{"dhcp_disabled"},
@@ -187,6 +198,13 @@ func dataSourceNetworkingSubnetV2Read(d *schema.ResourceData, meta interface{}) 
 		listOpts.Description = v.(string)
 	}
 
+	if v, ok := d.GetOk("nuagenet"); ok {
+		listOpts.NuageNet = v.(string)
+	}
+	if v, ok := d.GetOk("net_partition"); ok {
+		listOpts.NetPartition = v.(string)
+	}
+
 	if _, ok := d.GetOk("dhcp_enabled"); ok {
 		enableDHCP := true
 		listOpts.EnableDHCP = &enableDHCP
@@ -265,6 +283,7 @@ func dataSourceNetworkingSubnetV2Read(d *schema.ResourceData, meta interface{}) 
 
 	d.Set("name", subnet.Name)
 	d.Set("description", subnet.Description)
+	d.Set("nuagenet", subnet.NuageNet)
 	d.Set("tenant_id", subnet.TenantID)
 	d.Set("network_id", subnet.NetworkID)
 	d.Set("cidr", subnet.CIDR)

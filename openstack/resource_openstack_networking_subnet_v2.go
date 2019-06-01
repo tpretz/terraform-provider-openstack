@@ -75,6 +75,11 @@ func resourceNetworkingSubnetV2() *schema.Resource {
 				Optional: true,
 				ForceNew: false,
 			},
+			"net_partition": {
+				Type:     schema.TypeString,
+				Optional: true,
+				ForceNew: false,
+			},
 			"allocation_pools": {
 				Type:          schema.TypeList,
 				Optional:      true,
@@ -258,6 +263,11 @@ func resourceNetworkingSubnetV2Create(d *schema.ResourceData, meta interface{}) 
 		createOpts.NuageNet = &nuageNet
 	}
 
+	if v, ok := d.GetOk("net_partition"); ok {
+		netPartition := v.(string)
+		createOpts.NetPartition = &netPartition
+	}
+
 	noGateway := d.Get("no_gateway").(bool)
 	if noGateway {
 		gatewayIP := ""
@@ -325,6 +335,7 @@ func resourceNetworkingSubnetV2Read(d *schema.ResourceData, meta interface{}) er
 	d.Set("description", s.Description)
 	d.Set("tenant_id", s.TenantID)
 	d.Set("nuagenet", s.NuageNet)
+	d.Set("net_partition", s.NetPartition)
 	d.Set("dns_nameservers", s.DNSNameservers)
 	d.Set("enable_dhcp", s.EnableDHCP)
 	d.Set("network_id", s.NetworkID)
@@ -407,6 +418,14 @@ func resourceNetworkingSubnetV2Update(d *schema.ResourceData, meta interface{}) 
 		if v, ok := d.GetOk("nuagenet"); ok {
 			nuageNet := v.(string)
 			updateOpts.NuageNet = &nuageNet
+		}
+	}
+	if d.HasChange("net_partition") {
+		hasChange = true
+		updateOpts.NetPartition = nil
+		if v, ok := d.GetOk("net_partition"); ok {
+			netPartition := v.(string)
+			updateOpts.NetPartition = &netPartition
 		}
 	}
 

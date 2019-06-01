@@ -80,6 +80,7 @@ type Subnet struct {
 	// Default gateway used by devices in this subnet.
 	GatewayIP string `json:"gateway_ip"`
 	NuageNet string `json:"nuagenet"`
+	NetPartition string `json:"net_partition"`
 
 	// DNS name servers used by hosts in this subnet.
 	DNSNameservers []string `json:"dns_nameservers"`
